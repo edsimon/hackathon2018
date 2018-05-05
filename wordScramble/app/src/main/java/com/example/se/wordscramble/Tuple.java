@@ -13,6 +13,10 @@ public class Tuple<String,Integer> {
         return p1.getBlockID() == p2.getBlockID();
     }
 
+    public static boolean compareNameTouple(Tuple p1, Tuple p2){
+        return p1.getBlockString().equals(p2.blockString);
+    }
+
     public String getBlockString() {
         return blockString;
     }
