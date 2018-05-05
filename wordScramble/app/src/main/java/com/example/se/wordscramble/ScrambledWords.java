@@ -4,16 +4,13 @@ import java.util.Random;
 
 public class ScrambledWords {
 
-
     Random rand = new Random();
-    ArrayList<Integer> correctIndex = new ArrayList<>();
     ArrayList<Tuple> rightSentence = new ArrayList<>();
     ArrayList<Tuple> guessingSentence = new ArrayList<>();
 
     ScrambledWords(String correct, String nativeLang) {
         rightSentence    = cutString(correct, rightSentence);
         guessingSentence = cutString(nativeLang, guessingSentence);
-        correctIndex     = getCorrectIndex();
     }
 
     public ArrayList<Tuple> cutString(String str, ArrayList<Tuple> arr) {
@@ -32,16 +29,11 @@ public class ScrambledWords {
             int randomIndex = rand.nextInt(arr.size());
             temp.add(arr.get(randomIndex));
             arr.remove(randomIndex);
+            guessingSentence = temp;
+            System.out.println();
         }
         return temp;
     }
 
-    public ArrayList<Integer> getCorrectIndex(){
-        for (int i = 0; i < guessingSentence.size(); i++) {
-            if(guessingSentence.get(1).getBlockID().equals(rightSentence.get(i).getBlockID())){
-                correctIndex.add(i);
-            }
-        }
-        return correctIndex;
-    }
+
 }
