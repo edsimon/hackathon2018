@@ -9,6 +9,7 @@ public class Tuple<String,Integer> {
         blockID = i;
     }
 
+
     public static boolean compareTuples(Tuple p1, Tuple p2){
         return p1.getBlockID() == p2.getBlockID();
     }

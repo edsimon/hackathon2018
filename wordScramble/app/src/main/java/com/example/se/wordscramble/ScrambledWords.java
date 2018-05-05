@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class ScrambledWords {
 
-
     Random rand = new Random();
     ArrayList<Tuple> rightSentence = new ArrayList<>();
     ArrayList<Tuple> guessingSentence = new ArrayList<>();
@@ -31,6 +30,7 @@ public class ScrambledWords {
             temp.add(arr.get(randomIndex));
             arr.remove(randomIndex);
             guessingSentence = temp;
+            System.out.println();
         }
         return temp;
     }

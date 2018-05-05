@@ -24,6 +24,5 @@ public class main {
         for (int j = 0; j < size; j++) {
             System.out.print(arr.guessingSentence.get(j).getBlockID() + " ");
         }
-        System.out.println();
     }
 }
