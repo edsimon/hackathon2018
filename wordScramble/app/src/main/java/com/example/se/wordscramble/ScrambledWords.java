@@ -1,46 +1,47 @@
 package com.example.se.wordscramble;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ScrambledWords {
 
-    Random rand = new Random();
-    ArrayList<String> wordsOnWrongSpot = new ArrayList<>();
-    String[] arr;
-    int[] indice;
 
-    ScrambledWords(String str){
-        arr = cutString(str);
-        indice = new int[arr.length];
+    Random rand = new Random();
+    ArrayList<Integer> correctIndex = new ArrayList<>();
+    ArrayList<Tuple> rightSentence = new ArrayList<>();
+    ArrayList<Tuple> guessingSentence = new ArrayList<>();
+
+    ScrambledWords(String correct, String nativeLang) {
+        rightSentence    = cutString(correct, rightSentence);
+        guessingSentence = cutString(nativeLang, guessingSentence);
+        correctIndex     = getCorrectIndex();
     }
 
-    public String[] cutString(String str){
-        arr = str.split(" ");
+    public ArrayList<Tuple> cutString(String str, ArrayList<Tuple> arr) {
+        String[] temp = str.split(" ");
+        for (int i = 0; i < temp.length; i++) {
+            Tuple t = new Tuple(temp[i], i);
+            arr.add(t);
+        }
         return arr;
     }
 
-    public int[] firstScramble(){
-        for(int i = 0; i < arr.length; i++){
-            indice[i] = -1;
+    public ArrayList<Tuple> scramble(ArrayList<Tuple> arr){
+        ArrayList<Tuple> temp = new ArrayList<Tuple>();
+        int size = arr.size();
+        for (int i = 0; i < size; i++) {
+            int randomIndex = rand.nextInt(arr.size());
+            temp.add(arr.get(randomIndex));
+            arr.remove(randomIndex);
         }
-        return 
+        return temp;
     }
 
-    public void scramble(){
-        updateWrongWords();
-        for(int i = 0; i < indice.length; i++) {
-            if (indice[i] == -1) {
-                arr[i] = wordsOnWrongSpot.get(rand.nextInt(wordsOnWrongSpot.size()-1));
+    public ArrayList<Integer> getCorrectIndex(){
+        for (int i = 0; i < guessingSentence.size(); i++) {
+            if(guessingSentence.get(1).getBlockID().equals(rightSentence.get(i).getBlockID())){
+                correctIndex.add(i);
             }
         }
-    }
-
-    public void updateWrongWords(){
-        for(int i = 0; i < arr.length; i++){
-            if(indice[i] != -1){
-                wordsOnWrongSpot.add(arr[i]);
-            }
-        }
+        return correctIndex;
     }
 }
