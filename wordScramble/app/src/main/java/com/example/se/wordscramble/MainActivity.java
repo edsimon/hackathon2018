@@ -18,10 +18,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView tView;
 
-    private ScrambledWords sWords = new ScrambledWords("w1 w2 w3", "w11 w22 w33");
+    private ScrambledWords sWords = new ScrambledWords("w1 w2 w3", "Everyone is welcome");
     private ArrayList<Button> buttons = new ArrayList<>();
     private ArrayList<Button> ansButtons =  new ArrayList<>();
-    private ScrambledWords sCopyCorrect = sWords;
+    private ScrambledWords sCopyCorrect = new ScrambledWords("w1 w2 w3", "Everyone is welcome");
 
     private int pressCount = 0;
 
@@ -32,13 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
-
         sWords.scramble(sWords.guessingSentence);
-        tView = findViewById(R.id.assembledString);
-        tView.setText("");
+
 
         startSeq();
 
@@ -173,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ansButtons.get(i).setBackground(getResources().getDrawable(R.drawable.correctbutton));
             } else
                 ansButtons.get(i).setBackground(getResources().getDrawable(R.drawable.failedbutton));
+            System.out.println(ansButtons.get(i).getText() + " " + sCopyCorrect.guessingSentence.get(i).getBlockString());
         }
 
 
@@ -180,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void finishGame(){
-        tView.setText("HEELLOOOOOOO");
         for (Button button : buttons) {
             button.setVisibility(View.INVISIBLE);
 
@@ -197,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void resetInputs() {
-
         sWords.scramble(sWords.guessingSentence);
         //TimeUnit.SECONDS.sleep(1);
 
@@ -207,16 +201,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pressCount = 0;
         startSeq();
 
-
         for (Button button : buttons) {
             button.setVisibility(View.VISIBLE);
         }
-
         for(Button button : ansButtons){
             button.setVisibility(View.INVISIBLE);
         }
-
-
     }
 
     @Override
@@ -225,8 +215,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()){
 
             case R.id.btnId0: buttons.get(0).setText("YOLO");
-
-
             case 1: v.setBackgroundColor(2);
             case 2: v.setBackgroundColor(7);
         }
