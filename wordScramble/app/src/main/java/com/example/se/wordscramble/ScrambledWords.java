@@ -7,10 +7,14 @@ public class ScrambledWords {
     Random rand = new Random();
     ArrayList<Tuple> rightSentence = new ArrayList<>();
     ArrayList<Tuple> guessingSentence = new ArrayList<>();
+    String correctNative;
+    String correctGuessing;
 
     ScrambledWords(String correct, String nativeLang) {
         rightSentence    = cutString(correct, rightSentence);
         guessingSentence = cutString(nativeLang, guessingSentence);
+        correctGuessing = nativeLang;
+        correctNative = correct;
     }
 
     public ArrayList<Tuple> cutString(String str, ArrayList<Tuple> arr) {
