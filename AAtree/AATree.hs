@@ -9,6 +9,7 @@ module AATree (
   ex1,
   ex2,
   ex3,
+  checkLevels,
   split,         -- Ord a => AATree -> AATree
   skew,          -- AATree a -> AATree a
   get,           -- Ord a => a -> AATree a -> Maybe a
@@ -30,7 +31,7 @@ data AATree a = Null | Node a Level (AATree a) (AATree a)
 
 
 ex :: AATree Int
-ex = Node 8 1 (Node 6 2 Null Null) (Node 7 2 Null Null)
+ex = Node 8 1 Null Null
 ex1 :: AATree Int
 ex1 = Node 8 1 (Node 6 2 (Node 7 3 Null Null) Null) Null
 ex2 :: AATree Int
@@ -81,7 +82,7 @@ inorder (Node v _ l r) = inorder l ++ v : (inorder r)
 
 
 size :: AATree a -> Int
-size Null             = 0
+size Null           = 0
 size (Node _ _ l r) = size l + size r + 1
 
 
@@ -89,6 +90,12 @@ height :: AATree a -> Int
 height Null = 0
 height (Node _ _ l r) = 1 + max (height l) (height r)
 
+level :: AATree a -> Level
+level Null = 0
+level (Node _ level _ _ ) = level
+
+value :: AATree a -> a
+value (Node val _ _ _) = val
 --------------------------------------------------------------------------------
 -- Optional function
 
@@ -97,7 +104,6 @@ remove = error "   "
 
 --------------------------------------------------------------------------------
 -- Check that an AA tree is ordered and obeys the AA invariants
-
 checkTree :: Ord a => AATree a -> Bool
 checkTree root =
   isSorted (inorder root) &&
@@ -120,14 +126,29 @@ isSorted (x:y:xs) = if x <= y then isSorted (y:xs) else False
 --     rightChildOK node &&
 --     rightGrandchildOK node
 -- where each conjunct checks one aspect of the invariant
-checkLevels :: AATree a -> Bool
-checkLevels = error "checkLevels not implemented"
+checkLevels :: Ord a => AATree a -> Bool
+checkLevels (Node _ _ Null Null) = True
+checkLevels aaTree               = check_left aaTree && check_right aaTree
 
+check :: Ord a => a -> Level -> AATree a -> (a -> Bool) -> Bool
+check v 1   Null   _    = True
+check v lvl branch func = (lvl == level(branch)) || (lvl == level(branch)+1 && (func $ value(branch)))
+check _ _ _ _ = False
+
+check_left :: Ord a => AATree a -> Bool
+check_left (Node v lvl l _)  = check v lvl l (> v)
+
+check_right :: Ord a => AATree a -> Bool
+check_right (Node v lvl _ r) = check v lvl r (< v)
+
+--rightGrandchildOK :: AATree a -> Bool
 isEmpty :: AATree a -> Bool
-isEmpty = error "isEmpty not implemented"
+isEmpty Null           = True
+isEmpty (Node _ _ _ _) = False
 
 leftSub :: AATree a -> AATree a
-leftSub = error "leftSub not implemented"
+leftSub (Node _ _ l _) = l 
 
 rightSub :: AATree a -> AATree a
-rightSub = error "rightSub not implemented"
+rightSub (Node _ _ _ r) = r 
+
