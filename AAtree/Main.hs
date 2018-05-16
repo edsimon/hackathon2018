@@ -7,14 +7,24 @@
 import AATree
 --------------------------------------------------------------------------------
 
+
+str :: String
+str = "The quick brown fox jumps over the lazy dog"
+
 main :: IO ()
 main = do
-  contents <- getContents
+  content   <- getContents
+  let tree = foldr insert emptyTree (words content)
+  putStrLn $ "Size: " ++ (show $ size tree)
+  putStrLn $ "Height: " ++ (show $ height tree)
+  putStrLn $ "Optimal height: " ++ (show $ optimalHeight tree)
+  putStrLn $ "Height / Optimal height: " ++ (show (fromIntegral(height tree) / fromIntegral(optimalHeight tree)))
+  putStrLn $ "checkTree: " ++ show (checkTree tree)
+  putStrLn $ "First 20 words: " ++ unwords (take 20 (inorder tree))
 
-  -- split the data into words and build an AA tree
-  -- use foldl
-  undefined
 
   -- calculate and print statistics
   -- use fromIntegral/ceiling/logBase
-  undefined
+
+optimalHeight :: AATree a -> Int
+optimalHeight tree = ceiling (logBase 2 (fromIntegral((size tree)+1)) - 1)
